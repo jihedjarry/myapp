@@ -93,9 +93,24 @@ node {
       	sh 'docker run --rm --name maven-${commitIdLong} -v /var/lib/jenkins/maven/:/root/.m2 -v "$(pwd)":/usr/src/mymaven --network generator_generator -w /usr/src/mymaven maven:3.3-jdk-8 mvn -B clean install'
     	}
 
+	/* Docker - build & push */
+    	/* Attention Credentials */
+    	def imageName='192.168.222.177:5000/myapp'
 
+    	stage('DOCKER - Build/Push registry'){
+      	docker.withRegistry('http://192.168.222.177:5000', 'myregistry_login') {
+		def customImage = docker.build("$imageName:${version}-${commitId}")
+        	customImage.push()
+ 		}
+      	sh "docker rmi $imageName:${version}-${commitId}"
+    	}
 
-
+	/* Docker - test */
+    	stage('DOCKER - check registry'){
+      	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'myregistry_login',usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+      	sh 'curl -sk --user $USERNAME:$PASSWORD https://192.168.222.177:5000/v2/myapp/tags/list'
+      	 }
+    	}
     
     } finally {
         sh 'docker rm -f postgres'
