@@ -34,9 +34,8 @@ node {
 
         def buildNum = env.BUILD_NUMBER
         def branchName= env.BRANCH_NAME
-	print buildNum
 	print branchName	
-
+	
         stage('POSTGRESQL - Git checkout'){
         git 'https://github.com/jihedjarry/generator.git'
         }
