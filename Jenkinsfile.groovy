@@ -29,13 +29,13 @@ properties([
 ])
 
 
-node {
+node() {
     try {
 
         def buildNum = env.BUILD_NUMBER
         def branchName= env.BRANCH_NAME
 	print branchName	
-	
+	print buildNum	
         stage('POSTGRESQL - Git checkout'){
         git 'https://github.com/jihedjarry/generator.git'
         }
