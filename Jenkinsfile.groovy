@@ -1,6 +1,4 @@
-
-
-dfvdfvdfv// Define your secret project token here
+// Define your secret project token here
 def project_token = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEF'
 
 // Reference the GitLab connection name from your Jenkins Global configuration (https://JENKINS_URL/configure, GitLab section)
